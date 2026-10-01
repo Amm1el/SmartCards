@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# SmartCards
 
-## Getting Started
+An AI flashcard generator. Paste in your notes or a topic, and SmartCards turns them into a set of study flashcards you can flip through, save, and come back to on any device.
 
-First, run the development server:
+**Live site:** https://ai-flashcards-black.vercel.app
+
+## Features
+
+- **AI generation:** sends your text to the OpenAI API with a structured prompt and gets back 10 flashcards as JSON (front and back).
+- **Study mode:** click a card to flip between the question and the answer.
+- **Saved sets:** name a set and save it to your account; your sets are listed on the Flashcards page.
+- **Accounts:** sign up and sign in with Clerk.
+- **Payments:** Basic and Pro subscription plans through Stripe Checkout.
+
+## How it works
+
+1. `/api/generate` sends the input text and a system prompt to the OpenAI Chat Completions API, which returns flashcards as JSON.
+2. Saved sets are written to **Firebase Firestore** under `users/{userId}`, with one subcollection per set.
+3. `/api/checkout_session` creates a Stripe Checkout session for the selected plan, and the result page confirms the payment.
+
+## Tech stack
+
+| Layer | Tools |
+|---|---|
+| Frontend | Next.js 14, React, Material UI |
+| AI | OpenAI API |
+| Auth | Clerk |
+| Database | Firebase Firestore |
+| Payments | Stripe Checkout |
+| Hosting | Vercel |
+
+## Run locally
 
 ```bash
+git clone https://github.com/Amm1el/SmartCards.git
+cd SmartCards
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Create `.env.local` with:
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+| Variable | Description |
+|---|---|
+| `OPENAI_API_KEY` | OpenAI API key |
+| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Clerk publishable key |
+| `CLERK_SECRET_KEY` | Clerk secret key |
+| `STRIPE_SECRET_KEY` | Stripe secret key |
+| `NEXT_PUBLIC_STRIPE_PUBLIC_KEY` | Stripe publishable key |
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Firebase project settings live in `firebase.js`.
 
-## Learn More
+## Context
 
-To learn more about Next.js, take a look at the following resources:
+Built during the Headstarter AI Software Engineering Fellowship (Summer 2024).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Author
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Ammiel Bowen · [ammielbowen.com](https://ammielbowen.com) · [LinkedIn](https://www.linkedin.com/in/ammielbowen/)
